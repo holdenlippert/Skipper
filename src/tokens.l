@@ -8,4 +8,5 @@
 \(			return LP;
 \)			return RP;
 \;			return SC;
+[ \t\n]			/* ignore whitespace */
 %%

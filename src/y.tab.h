@@ -8,6 +8,6 @@
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-typedef union { char *name; struct ast *node; } YYSTYPE;
+typedef union { char *name; void *node; } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;
