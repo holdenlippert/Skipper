@@ -4,7 +4,7 @@
 %}
 
 %%
-[a-zA-Z][a-zA-Z0-9]*	{ yylval=strdup(yytext); return ID; }
+[a-zA-Z][a-zA-Z0-9]*	{ printf("ID: %s\n", yytext); return ID; }
 \(			return LP;
 \)			return RP;
 \;			return SC;

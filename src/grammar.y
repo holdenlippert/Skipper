@@ -1,7 +1,6 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#define YYSTYPE char *
 
 void yyerror(const char *str)
 {
@@ -14,6 +13,8 @@ int main() { yyparse(); }
 %}
 
 %token ID LP RP SC
+
+%union { char *name; }
 
 %%
 
@@ -28,7 +29,7 @@ line:
 	;
 
 bind:
-	ID expr { printf("\tGot bind: %s\n", $1); }
+	ID expr { printf("\tGot bind.\n"); }
 	;
 
 expr:
