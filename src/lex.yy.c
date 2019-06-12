@@ -723,7 +723,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 7 "tokens.l"
-{ printf("ID: %s\n", yytext); return ID; }
+{ yylval.name = strdup(yytext); return ID; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP

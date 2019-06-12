@@ -19,6 +19,50 @@ static const char yysccsid[] = "@(#)yaccpar	1.9 (Berkeley) 02/21/93";
 #line 2 "grammar.y"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+struct ast {
+	char *name;
+	struct ast *function;
+	struct ast *argument;
+};
+
+struct ast *root = NULL;
+
+struct ast *
+node(struct ast *function, struct ast *argument)
+{
+	/*printf("calling node\n");*/
+	struct ast *ast = malloc(sizeof(struct ast));
+	ast->name = NULL;
+	ast->function = function;
+	ast->argument = argument;
+	root = ast;
+}
+
+struct ast *
+leaf(char *name)
+{
+	struct ast *ast = malloc(sizeof(struct ast));
+	ast->name = strdup(name);
+	ast->function = NULL;
+	ast->argument = NULL;
+}
+
+void
+printtree(struct ast *tree)
+{
+	/*printf("calling printtree on %p\n", tree);*/
+	/*printf("calling printtree on (%p = %s, %p, %p)\n", tree->name, tree->name, tree->function, tree->argument);*/
+	if (tree->name != NULL)
+		printf("%s", tree->name);
+	else {
+		printtree(tree->function);
+		printf("(");
+		printtree(tree->argument);
+		printf(")");
+	}
+}
 
 void yyerror(const char *str)
 {
@@ -27,17 +71,22 @@ void yyerror(const char *str)
 
 int yywrap() { return (1); }
 
-int main() { yyparse(); }
-#line 17 "grammar.y"
+int main() {
+	yyparse();
+	printf("finished parsing\n");
+	printtree(root);
+	printf("\n");
+}
+#line 66 "grammar.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-typedef union { char *name; } YYSTYPE;
+typedef union { char *name; struct ast *node; } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 40 "y.tab.c"
+#line 89 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -76,37 +125,37 @@ extern int YYPARSE_DECL();
 #define SC 260
 #define YYERRCODE 256
 static const short yylhs[] = {                           -1,
-    0,    0,    1,    1,    2,    3,    3,
+    0,    0,    2,    2,    3,    1,    1,
 };
 static const short yylen[] = {                            2,
     0,    3,    1,    1,    2,    1,    4,
 };
 static const short yydefred[] = {                         1,
-    0,    0,    0,    3,    0,    6,    0,    2,    0,    0,
+    0,    0,    0,    0,    3,    6,    0,    0,    2,    0,
     7,
 };
 static const short yydgoto[] = {                          1,
     3,    4,    5,
 };
 static const short yysindex[] = {                         0,
- -255, -251, -252,    0, -249,    0, -249,    0, -251, -254,
+ -255, -250, -249, -252,    0,    0, -249, -250,    0, -254,
     0,
 };
 static const short yyrindex[] = {                         0,
-    0, -257,    0,    0, -250,    0, -248,    0,    0,    0,
+    0, -257, -248,    0,    0,    0, -247,    0,    0,    0,
     0,
 };
 static const short yygindex[] = {                         0,
-    0,    0,   -2,
+   -2,    0,    0,
 };
-#define YYTABLESIZE 12
+#define YYTABLESIZE 13
 static const short yytable[] = {                          7,
-    6,    2,    6,    9,   11,    6,   10,    8,    9,    4,
-    0,    5,
+    6,    2,    6,    8,   11,   10,    6,    9,    8,    0,
+    0,    4,    5,
 };
 static const short yycheck[] = {                          2,
-  258,  257,  260,  258,  259,  257,    9,  260,  258,  260,
-   -1,  260,
+  258,  257,  260,  258,  259,    8,  257,  260,  258,   -1,
+   -1,  260,  260,
 };
 #define YYFINAL 1
 #ifndef YYDEBUG
@@ -375,15 +424,23 @@ yyreduce:
         memset(&yyval, 0, sizeof yyval);
     switch (yyn)
     {
+case 4:
+#line 80 "grammar.y"
+	{ printtree(root); printf("\n"); }
+break;
 case 5:
-#line 32 "grammar.y"
-	{ printf("\tGot bind.\n"); }
+#line 84 "grammar.y"
+	{ printf("got bind.\n");}
+break;
+case 6:
+#line 88 "grammar.y"
+	{ yyval.node = leaf(yystack.l_mark[0].name); }
 break;
 case 7:
-#line 38 "grammar.y"
-	{ printf("\tGot expr!\n"); }
+#line 90 "grammar.y"
+	{ yyval.node = node(yystack.l_mark[-3].node, yystack.l_mark[-1].node);}
 break;
-#line 386 "y.tab.c"
+#line 443 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
