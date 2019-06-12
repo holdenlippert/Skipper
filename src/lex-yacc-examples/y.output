@@ -1,0 +1,305 @@
+Grammar
+
+    0 $accept: commands $end
+
+    1 commands: /* empty */
+    2         | commands command SEMICOLON
+
+    3 command: zone_set
+
+    4 zone_set: ZONETOK quotedname zonecontent
+
+    5 zonecontent: OBRACE zonestatements EBRACE
+
+    6 quotedname: QUOTE FILENAME QUOTE
+
+    7 zonestatements: /* empty */
+    8               | zonestatements zonestatement SEMICOLON
+
+    9 zonestatement: statements
+   10              | FILETOK quotedname
+
+   11 block: OBRACE zonestatements EBRACE SEMICOLON
+
+   12 statements: /* empty */
+   13           | statements statement
+
+   14 statement: WORD
+   15          | block
+   16          | quotedname
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+WORD (258) 14
+FILENAME (259) 6
+QUOTE (260) 6
+OBRACE (261) 5 11
+EBRACE (262) 5 11
+SEMICOLON (263) 2 8 11
+ZONETOK (264) 4
+FILETOK (265) 10
+
+
+Nonterminals, with rules where they appear
+
+$accept (11)
+    on left: 0
+commands (12)
+    on left: 1 2, on right: 0 2
+command (13)
+    on left: 3, on right: 2
+zone_set (14)
+    on left: 4, on right: 3
+zonecontent (15)
+    on left: 5, on right: 4
+quotedname (16)
+    on left: 6, on right: 4 10 16
+zonestatements (17)
+    on left: 7 8, on right: 5 8 11
+zonestatement (18)
+    on left: 9 10, on right: 8
+block (19)
+    on left: 11, on right: 15
+statements (20)
+    on left: 12 13, on right: 9 13
+statement (21)
+    on left: 14 15 16, on right: 13
+
+
+state 0
+
+    0 $accept: . commands $end
+
+    $default  reduce using rule 1 (commands)
+
+    commands  go to state 1
+
+
+state 1
+
+    0 $accept: commands . $end
+    2 commands: commands . command SEMICOLON
+
+    $end     shift, and go to state 2
+    ZONETOK  shift, and go to state 3
+
+    command   go to state 4
+    zone_set  go to state 5
+
+
+state 2
+
+    0 $accept: commands $end .
+
+    $default  accept
+
+
+state 3
+
+    4 zone_set: ZONETOK . quotedname zonecontent
+
+    QUOTE  shift, and go to state 6
+
+    quotedname  go to state 7
+
+
+state 4
+
+    2 commands: commands command . SEMICOLON
+
+    SEMICOLON  shift, and go to state 8
+
+
+state 5
+
+    3 command: zone_set .
+
+    $default  reduce using rule 3 (command)
+
+
+state 6
+
+    6 quotedname: QUOTE . FILENAME QUOTE
+
+    FILENAME  shift, and go to state 9
+
+
+state 7
+
+    4 zone_set: ZONETOK quotedname . zonecontent
+
+    OBRACE  shift, and go to state 10
+
+    zonecontent  go to state 11
+
+
+state 8
+
+    2 commands: commands command SEMICOLON .
+
+    $default  reduce using rule 2 (commands)
+
+
+state 9
+
+    6 quotedname: QUOTE FILENAME . QUOTE
+
+    QUOTE  shift, and go to state 12
+
+
+state 10
+
+    5 zonecontent: OBRACE . zonestatements EBRACE
+
+    $default  reduce using rule 7 (zonestatements)
+
+    zonestatements  go to state 13
+
+
+state 11
+
+    4 zone_set: ZONETOK quotedname zonecontent .
+
+    $default  reduce using rule 4 (zone_set)
+
+
+state 12
+
+    6 quotedname: QUOTE FILENAME QUOTE .
+
+    $default  reduce using rule 6 (quotedname)
+
+
+state 13
+
+    5 zonecontent: OBRACE zonestatements . EBRACE
+    8 zonestatements: zonestatements . zonestatement SEMICOLON
+
+    EBRACE   shift, and go to state 14
+    FILETOK  shift, and go to state 15
+
+    $default  reduce using rule 12 (statements)
+
+    zonestatement  go to state 16
+    statements     go to state 17
+
+
+state 14
+
+    5 zonecontent: OBRACE zonestatements EBRACE .
+
+    $default  reduce using rule 5 (zonecontent)
+
+
+state 15
+
+   10 zonestatement: FILETOK . quotedname
+
+    QUOTE  shift, and go to state 6
+
+    quotedname  go to state 18
+
+
+state 16
+
+    8 zonestatements: zonestatements zonestatement . SEMICOLON
+
+    SEMICOLON  shift, and go to state 19
+
+
+state 17
+
+    9 zonestatement: statements .
+   13 statements: statements . statement
+
+    WORD    shift, and go to state 20
+    QUOTE   shift, and go to state 6
+    OBRACE  shift, and go to state 21
+
+    $default  reduce using rule 9 (zonestatement)
+
+    quotedname  go to state 22
+    block       go to state 23
+    statement   go to state 24
+
+
+state 18
+
+   10 zonestatement: FILETOK quotedname .
+
+    $default  reduce using rule 10 (zonestatement)
+
+
+state 19
+
+    8 zonestatements: zonestatements zonestatement SEMICOLON .
+
+    $default  reduce using rule 8 (zonestatements)
+
+
+state 20
+
+   14 statement: WORD .
+
+    $default  reduce using rule 14 (statement)
+
+
+state 21
+
+   11 block: OBRACE . zonestatements EBRACE SEMICOLON
+
+    $default  reduce using rule 7 (zonestatements)
+
+    zonestatements  go to state 25
+
+
+state 22
+
+   16 statement: quotedname .
+
+    $default  reduce using rule 16 (statement)
+
+
+state 23
+
+   15 statement: block .
+
+    $default  reduce using rule 15 (statement)
+
+
+state 24
+
+   13 statements: statements statement .
+
+    $default  reduce using rule 13 (statements)
+
+
+state 25
+
+    8 zonestatements: zonestatements . zonestatement SEMICOLON
+   11 block: OBRACE zonestatements . EBRACE SEMICOLON
+
+    EBRACE   shift, and go to state 26
+    FILETOK  shift, and go to state 15
+
+    $default  reduce using rule 12 (statements)
+
+    zonestatement  go to state 16
+    statements     go to state 17
+
+
+state 26
+
+   11 block: OBRACE zonestatements EBRACE . SEMICOLON
+
+    SEMICOLON  shift, and go to state 27
+
+
+state 27
+
+   11 block: OBRACE zonestatements EBRACE SEMICOLON .
+
+    $default  reduce using rule 11 (block)
