@@ -24,7 +24,8 @@ The SKInny language is a variation on the Unlambda language. Just like
 Unlambda, SKInny is built on top of the SKI calculus. There are three major
 differences between SKInny and Unlambda:
 1. Function application is written in the more traditional `f(x)` form, rather
-   than `` `fx``. Chained application becomes `f(x)(y)`, rather than `\`\`fxy`. 
+   than `` `fx``. Chained application becomes `f(x)(y)`, rather than ```
+   ``fxy```. 
 2. SKInny allows for macros to be defined for use in later expressions.
 3. SKInny uses call-by-need semantics, as opposed to Unlambda's call-by-value
    semantics.
