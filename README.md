@@ -36,3 +36,10 @@ types of statements in SKInny:
    "name" to be used in place of "expr" in later statements.
 2. Evaluate statements, of the form `expr;`. The interpreter simply evaluates
    "expr".
+
+Example
+-------
+This is an example SKInny program:
+
+    I S(K)(K)
+    S(I)(p)(p)
