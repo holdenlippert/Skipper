@@ -4,3 +4,4 @@ p(p);
 print(print);
 S(print)(print)(print);
 S(I)(print)(p);
+I(I)(I)(I)(I(I));
