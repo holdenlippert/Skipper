@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "main.h"
+#include "ast.h"
 
 void
 yyerror(const char *str)
@@ -18,7 +18,7 @@ yywrap()
 
 %}
 
-%token ID LP RP SC
+%token ID LP RP SC CO
 
 %union { char *name; void *node; }
 

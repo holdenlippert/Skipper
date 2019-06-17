@@ -1,1 +1,1 @@
-void check(struct ast *);
+void checktree(struct ast *, bool verbose_flag);

@@ -2,6 +2,7 @@
 #define LP 258
 #define RP 259
 #define SC 260
+#define CO 261
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1

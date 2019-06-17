@@ -9,4 +9,6 @@
 \)			return RP;
 \;			return SC;
 [ \t\n]			/* ignore whitespace */
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]       { /* DO NOTHING */ }
+[/][*]                                    { printf("Unterminated comment"); exit(1);}
 %%

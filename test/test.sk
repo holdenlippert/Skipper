@@ -1,0 +1,44 @@
+print p;
+p(p);
+print(print);
+p(p(p));
+p(p(p(p)));
+k(p)(p)(p);
+s(p)(p)(p);
+s(p)(p);
+s(p)(p)(p); /* = p(p)(p(p)) = . p(p(p)) = .. p(p) = ... p */
+
+
+I s(k)(k);
+zero k(I);
+inc s(s(k(s))(k));
+mul s(k(s))(k);
+
+one inc(zero);
+two inc(one);
+three inc(two);
+four inc(three);
+five inc(four);
+six inc(five);
+seven inc(six);
+eight inc(seven);
+nine mul(three)(three);
+
+one(p)(p);
+two(p)(p);
+three(p)(p);
+four(p)(p);
+five(p)(p);
+six(p)(p);
+seven(p)(p);
+eight(p)(p);
+nine(p)(p);
+mul(one)(three)(p)(p);
+mul(two)(three)(p)(p);
+mul(three)(three)(p)(p);
+mul(two)(two)(p)(p);
+
+nine i(two)(two);
+nine(p)(p);
+
+mul(two)(two)(p)(p);

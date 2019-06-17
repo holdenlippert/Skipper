@@ -20,7 +20,7 @@ static const char yysccsid[] = "@(#)yaccpar	1.9 (Berkeley) 02/21/93";
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "main.h"
+#include "ast.h"
 
 void
 yyerror(const char *str)
@@ -80,6 +80,7 @@ extern int YYPARSE_DECL();
 #define LP 258
 #define RP 259
 #define SC 260
+#define CO 261
 #define YYERRCODE 256
 static const short yylhs[] = {                           -1,
     0,    0,    2,    2,    1,    1,
@@ -115,7 +116,7 @@ static const short yycheck[] = {                          2,
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
-#define YYMAXTOKEN 260
+#define YYMAXTOKEN 261
 #if YYDEBUG
 static const char *yyname[] = {
 
@@ -125,7 +126,7 @@ static const char *yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"ID","LP","RP","SC",
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"ID","LP","RP","SC","CO",
 };
 static const char *yyrule[] = {
 "$accept : lines",
@@ -393,7 +394,7 @@ case 6:
 #line 43 "grammar.y"
 	{ yyval.node = node(yystack.l_mark[-3].node, yystack.l_mark[-1].node);}
 break;
-#line 396 "y.tab.c"
+#line 397 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
