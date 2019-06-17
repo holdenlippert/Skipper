@@ -41,5 +41,5 @@ Example
 -------
 This is an example SKInny program:
 
-    I S(K)(K)
-    S(I)(p)(p)
+    I S(K)(K);
+    S(I)(p)(p);
