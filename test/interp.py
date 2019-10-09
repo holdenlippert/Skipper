@@ -4,17 +4,14 @@ from collections import deque
 from copy import deepcopy
 from sys import argv
 
-def log(*s):
-    print ' '.join(map(str, s))
+def log(*s): print(' '.join(map(str, s)))
 
-class InterpreterError(Exception):
-    pass
+class InterpreterError(Exception): pass
 
 class Interpreter:
     def __init__(self, program):
         self.ast = Parser(program).parse()
-        self.symbols = {}
-        self.output = []
+        self.symbols, self.output = {}, []
 
     def backlink(self, app):
         if app.function:

@@ -2,7 +2,6 @@
 import re
 from collections import namedtuple
 
-
 #Bind = namedtuple('Bind', ['identifier', 'expression'])
 #App = namedtuple('App', ['function', 'argument'])
 #Symbol = namedtuple('Symbol', ['name', 'params'])
