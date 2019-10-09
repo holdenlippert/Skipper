@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ast.h"
+#include "main.h"
+
+int yylex();
 
 void
 yyerror(const char *str)

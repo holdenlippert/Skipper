@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "ast.h"
 #include "check.h"
 #include "main.h"
 #include "y.tab.h"
 
+int yyparse();
 
 void				addinstr(char *name, struct ast *expr);
 /* Private function prototypes: */
