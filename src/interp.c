@@ -59,6 +59,7 @@ evaluate(struct ast *expr, bool debug_flag)
 		current = poptree(stack);
 		if (debug_flag) {
 			printf("\nPopped %p: ", current);
+			checktree(current, false);
 			printtree(current);
 			printf("\n");
 		}
@@ -75,8 +76,10 @@ evaluate(struct ast *expr, bool debug_flag)
 			// and then try again.
 			if (debug_flag) {
 				printf("Hit an application of an application, pushing: %p_", current);
+				checktree(current, false);
 				printtree(current);
 				printf(" and %p_", current->function);
+				checktree(current->function, false);
 				printtree(current->function);
 				printf(".\n");
 			}
@@ -129,8 +132,8 @@ evaluate(struct ast *expr, bool debug_flag)
 
 				current->argument = malloc(sizeof(struct ast));
 				current->argument->name = NULL;
-				current->argument->function = y;
 				current->argument->argument = z;
+				current->argument->function = y;
 			} else if (current->function->param1 != NULL) {
 				if (debug_flag) {
 					printf("with one param\n");
@@ -153,6 +156,7 @@ evaluate(struct ast *expr, bool debug_flag)
 			exit(1);
 		}
 		if (debug_flag) {
+			checktree(current, false);
 			printf("pushing %p onto the stack\n", current);
 		}
 		pushtree(stack, current);
@@ -168,8 +172,9 @@ execute(struct instruction *instr, bool simplify_flag, bool debug_flag)
 	}
 	else {
 		simplify(instr->expr);
-		if (simplify_flag)
+		if (simplify_flag) {
 			printtree(instr->expr);
+		}
 		else
 			evaluate(instr->expr, debug_flag);
 		printf("\n");

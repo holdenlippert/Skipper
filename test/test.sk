@@ -6,7 +6,7 @@ p(p(p(p)));
 k(p)(p)(p);
 s(p)(p)(p);
 s(p)(p);
-s(p)(p)(p); /* = p(p)(p(p)) = . p(p(p)) = .. p(p) = ... p */
+s(p)(p)(p);
 
 
 I s(k)(k);
@@ -38,7 +38,7 @@ mul(two)(three)(p)(p);
 mul(three)(three)(p)(p);
 mul(two)(two)(p)(p);
 
-nine i(two)(two);
+nine I(two)(two);
 nine(p)(p);
 
 mul(two)(two)(p)(p);

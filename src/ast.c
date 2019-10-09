@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "ast.h"
+#include "check.h"
 #include "main.h"
 
 /*
@@ -18,7 +19,7 @@ node(struct ast *function, struct ast *argument)
 	ast->argument = argument;
 	ast->param1 = NULL;
 	ast->param2 = NULL;
-	ast->color = 'w';
+	ast->color = 0;
 	return ast;
 }
 
@@ -58,6 +59,7 @@ deepcopy(struct ast *tree)
 void
 printtree(struct ast *tree)
 {
+	checktree(tree, false);
 	if (tree->name != NULL) {
 		printf("%s", tree->name);
 		if (tree->param1 != NULL) {

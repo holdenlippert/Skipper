@@ -8,13 +8,14 @@
 #include "treestack.h"
 
 static void checksymbolorapp(struct ast *tree);
+static void checkloop(struct ast *tree);
 
 void
 whiteout(struct ast *tree)
 {
 	if (tree == NULL)
 		return;
-	tree->color = 'w';
+	tree->color = 0;
 	whiteout(tree->function);
 	whiteout(tree->argument);
 }
@@ -22,49 +23,23 @@ whiteout(struct ast *tree)
 void
 checktree(struct ast *tree, bool verbose_flag)
 {
-	struct treestack *stack;
-	struct ast *current;
-
-	// Initialize the stack:
-	stack = newstack();
-	pushtree(stack, tree);
-
-
-	// Run DFS on the graph and check for correctness:
-	if (verbose_flag)
-		printf("\n\nAbout to run check...\n");
-	while (!isempty(stack)) {
-		// Perform check on head:
-		current = poptree(stack);
-		if (current->name != NULL) {
-			if (verbose_flag)
-				printf("Checking %p(%s)\n", current,
-				    current->name);
-		} else {
-			if (verbose_flag)
-				printf("Checking %p(%p, %p)\n", current,
-				    current->function, current->argument);
-		}
-
-		// Assure symbols and applications are mutually exclusive:
-		if (verbose_flag)
-			printf("checking for mututal exclusion\n");
-		checksymbolorapp(current);
-		if (verbose_flag)
-			printf("mututal exclusion good\n");
-
-		// We should only find each tree once (no loops!):
-
-		// Push children:
-		if (current->name == NULL) {
-			pushtree(stack, current->argument);
-			pushtree(stack, current->function);
-		}
-	}
+	checkloop(tree);
 	whiteout(tree);
-	if (verbose_flag)
-		printf("Finished checking\n");
+}
 
+static void
+checkloop(struct ast *tree)
+{
+	if (tree == NULL || tree->color == 2)
+		return;
+	checksymbolorapp(tree);
+	assert(tree->color == 0);
+	tree->color = 1;
+	checkloop(tree->function);
+	checkloop(tree->argument);
+	checkloop(tree->param1);
+	checkloop(tree->param2);
+	tree->color = 2;
 }
 
 static void
