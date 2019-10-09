@@ -10,12 +10,17 @@
 #include "main.h"
 #include "y.tab.h"
 
+/* External functions: */
+// TODO: Get these in header files and include them.
 int yyparse();
+void initinterp();
+void execute(struct instruction *instr, bool simplify_flag, bool debug_flag);
 
-void				addinstr(char *name, struct ast *expr);
+void addinstr(char *name, struct ast *expr);
+
 /* Private function prototypes: */
-static struct instruction *	getinstr();
-static void			usage();
+static struct instruction * getinstr();
+static void usage();
 
 /* Private global variables to keep track of the instruction queue: */
 static struct instruction *first = NULL;
