@@ -50,23 +50,17 @@ class Interpreter:
         self.backlink(app)
 
         while appstack:
-            #print "Original:", original
             app = appstack.pop()
-            #print "popped:", app
-            #print "Just popped:", app
             if isinstance(app.function, Symbol):
-                #print "got symbol"
                 name = app.function.name
                 if name == 'p':
                     self.output.append('.')
                     app.parent.function = app.argument
                     app.argument.parent = app.parent
                     if isinstance(app.argument, App):
-                        #print "Pushing:", app.argument
                         appstack.append(app.argument)
                 elif name == 'k':
                     if app.function.params:
-                        #print len(app.function.params), "params"
                         app.parent.function = app.function.params[0]
                         try:
                             app.function.params[0].parent = app.parent
@@ -75,10 +69,8 @@ class Interpreter:
                             print app.function
                             raise e
                         if isinstance(app.function.params[0], App):
-                            #print "Pushing:", app.function.params[0]
                             appstack.append(app.function.params[0])
                     else:
-                        #print "no params"
                         app.function.params.append(app.argument)
                         app.parent.function = app.function
                 elif name == 's':
@@ -101,30 +93,22 @@ class Interpreter:
 
                         app.parent.function = s
                         s.parent = app.parent
-                        #print "Pushing:", s
                         appstack.append(s)
-                        #print "Pushing:", xz
                         appstack.append(xz)
                         pass
                     else:
                         app.function.params.append(app.argument)
                         app.parent.function = app.function
                 elif name in self.symbols:
-                    #print "doing lookup"
                     expr = deepcopy(self.symbols[name])
                     newapp = App(expr, app.argument)
-                    #print "app.parent:", app.parent
                     newapp.parent = app.parent
                     app.parent.function = newapp
                     self.backlink(newapp) # TODO: AM I NOT BACKLINKING THE FUNCTION FOR S?
                     appstack.append(newapp)
-                    #print "app:", app
-                    #print "app.parent:", app.parent
-                    #print "orig:", original
                 else:
                     raise InterpreterError("Found symbol: " + str(name))
             elif isinstance(app.function, App):
-                #print "got app", app.function
                 appstack.append(app)
                 appstack.append(app.function)
             else:
@@ -133,30 +117,7 @@ class Interpreter:
 
 
 def main(args):
-    #lines = ['I i', 'I i(i)', 'I S(K)(K)', 'S(K)(K) I', 'S(K)(K)', 'I']
-    #lines = ['p(I)(I)', 'k(p)(I)(I)']
-    #lines = ['p(p(p(p)))(p)(p)']
-
-    #lines = ['k(p)', 'k(p)(p(p))', 'k(p)(i)(p(p))', 'k(p)(i)(p)(i)']
-
-    #lines = ['s(k)(k)(k(s(k)(k)))(p(p(p)))(p(p))']
-
     lines = ['t k\n f k(I)\nI s(k)(k)\nI  (f)  (p(I))  (p(p(I)))']
-
-    #lines = ['I s(k)(k)\nI(p)(p)(p)']
-
-    #lines = ['s(k)(k)(p)(p)']
-
-    #lines = ['s(p)(p)(p)', 's(k)(p)(p)', 's(p)(k)(p)']
-    # sppp = pp(pp) = p(pp) = pp = p
-    # ...
-
-    # skpp = kp(pp) = p
-    #
-
-    # spkp = pp(kp) = p(kp) = kp
-    # ..
-
     if len(args) == 2:
         with open(args[1]) as f:
             output = f.read()
